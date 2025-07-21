@@ -1,13 +1,15 @@
 from flask import Flask, request, jsonify
-from predict_mood import predict_mood  # ✅ FIXED: Use actual filename
+from flask_cors import CORS  # ✅ Add this
+from predict_mood import predict_mood
 
 app = Flask(__name__)
+CORS(app)  # ✅ Enable CORS for all routes
 
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.get_json()
     text = data['text']
-    mood = predict_mood(text)  # Returns: 'happy', 'sad', 'angry', etc.
+    mood = predict_mood(text)
     return jsonify({'mood': mood})
 
 if __name__ == '__main__':
